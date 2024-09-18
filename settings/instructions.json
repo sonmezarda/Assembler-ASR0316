@@ -1,0 +1,238 @@
+{
+    "DEFAULTS":{
+        "IM":"0",
+        "RW":"0",
+        "SF":"0",
+        "MR":"0",
+        "OPCODE":"0000",
+        "Rd":"0000",
+        "Ra":"0000",
+        "Rb":"0000"
+    },
+    "ADD":{
+        "formats":[ 
+            ["rd", "ra", "rb/#imm16"],
+            ["rd-ra", "rb/#imm16"] 
+        ],
+        "RW":"1",
+        "SF":"0",
+        "MR":"0",
+        "OPCODE":"0010"
+    },
+    "ADDS":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"1",
+        "MR":"0",
+        "OPCODE":"0010"
+    },
+    "SUB":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"0",
+        "MR":"0",
+        "OPCODE":"0011"
+    },
+    "SUBS":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"1",
+        "MR":"0",
+        "OPCODE":"0011"
+    },
+    "MUL":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"0",
+        "MR":"0",
+        "OPCODE":"0100"
+    },
+    "MULS":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"1",
+        "MR":"0",
+        "OPCODE":"0100"
+    },
+    "DIV":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"0",
+        "MR":"0",
+        "OPCODE":"0101"
+    },
+    "DIVS":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"1",
+        "MR":"0",
+        "OPCODE":"0101"
+    },
+    "AND":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"0",
+        "MR":"0",
+        "OPCODE":"0110"
+    },
+    "ANDS":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"1",
+        "MR":"0",
+        "OPCODE":"0110"
+    },
+    "ORR":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"0",
+        "MR":"0",
+        "OPCODE":"0111"
+    },
+    "ORRS":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"1",
+        "MR":"0",
+        "OPCODE":"0111"
+    },
+    "NOT":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"0",
+        "MR":"0",
+        "OPCODE":"1000"
+    },
+    "NOTS":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"1",
+        "MR":"0",
+        "OPCODE":"1000"
+    },
+    "LSL":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"0",
+        "MR":"0",
+        "OPCODE":"1001"
+    },
+    "LSLS":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"1",
+        "MR":"0",
+        "OPCODE":"1001"
+    },
+    "RSL":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"0",
+        "MR":"0",
+        "OPCODE":"1010"
+    },
+    "RSLS":{
+        "format":["rd", "ra", "rb/#imm16"],
+        "RW":"1",
+        "SF":"1",
+        "MR":"0",
+        "OPCODE":"1010"
+    },
+    "STR":{
+        "formats":
+        [
+            ["rd", "[ra]/#imm16/[ra, #imm16]"]
+        ],
+        "OPCODE":"0010",
+        "RW":"0",
+        "SF":"0",
+        "MR":"0"
+    },
+    "LDR":{
+        "format":["rd", "[ra]/#imm16/[ra, #imm16]"],
+        "OPCODE":"0010",
+        "RW":"1",
+        "SF":"0",
+        "MR":"1"
+    },
+    "MOV":{
+        "format":["rd", "ra/#imm16"],
+        "OPCODE":"0010",
+        "IM":"1",
+        "RW":"1",
+        "SF":"0",
+        "MR":"0"
+    },
+    "CMP": {
+        "format":["ra", "rb/#imm16"],
+        "OPCODE":"0011",
+        "RW":"0",
+        "SF":"1",
+        "MR":"0"
+    },
+    "B":{
+        "format":["rb/#imm16"],
+        "OPCODE":"0001",
+        "Rd":"1111",
+        "Ra":"0111",
+        "IM":"1",
+        "RW":"1",
+        "SF":"0",
+        "MR":"0"
+    },
+    "BEQ":{
+        "format":["rb/#imm16"],
+        "OPCODE":"0001",
+        "Rd":"1111",
+        "Ra":"1010",
+        "IM":"1",
+        "RW":"1",
+        "SF":"0",
+        "MR":"0"
+    },
+    "BNE":{
+        "format":["rb/#imm16"],
+        "OPCODE":"0001",
+        "Rd":"1111",
+        "Ra":"0011",
+        "IM":"1",
+        "RW":"1",
+        "SF":"0",
+        "MR":"0"
+    },
+    "BL":{
+        "format":["rb/#imm16"],
+        "OPCODE":"0001",
+        "Rd":"1111",
+        "Ra":"1001",
+        "IM":"1",
+        "RW":"1",
+        "SF":"0",
+        "MR":"0"
+    },
+    "BX":{
+        "format":[],
+        "Rd":"1111",
+        "Ra":"1110",
+        "RW":"1",
+        "SF":"0",
+        "MR":"0",
+        "OPCODE":"0010"
+    },
+    "POP":{
+        "format":["rd"],
+        "OPCODE":"0010",
+        "RW":"1",
+        "SF":"0",
+        "MR":"1",
+        "Ra":"1101"
+    },
+    "PUSH":{
+        "format":["rd"],
+        "OPCODE":"0010",
+        "RW":"0",
+        "SF":"0",
+        "MR":"0",
+        "Ra":"1101"
+    }
+}

@@ -1,0 +1,127 @@
+B #35
+lbl main:
+    MOV R1, #0X1000
+    MOV R2, #0B0000001111000000
+    STR R2, [R1,#2]
+    MOV R2, #0B0000011111100000
+    STR R2, [R1,#3]
+    MOV R2, #0B0000111111110000
+    STR R2, [R1,#4]
+    MOV R2, #0B0001111111111000
+    STR R2, [R1,#5]
+    MOV R2, #0B0011111111111100
+    STR R2, [R1,#6]
+    MOV R2, #0B0111111111111110
+    STR R2, [R1,#7]
+    STR R2, [R1,#8]
+    STR R2, [R1,#9]
+    STR R2, [R1,#10]
+    STR R2, [R1,#11]
+    MOV R2, #0B0111111001111110
+    STR R2, [R1,#12]
+    MOV R2, #0B0011111001111100
+    STR R2, [R1,#13]
+lbl stop:
+    B #22
+lbl write_NIDOS:
+    MOV R1, #0X1010
+    ADD R1, R1, #1
+    BL #50
+    ADD R1, R1, #3
+    BL #55
+    ADD R1, R1, #2
+    BL #45
+    ADD R1, R1, #3
+    BL #60
+    ADD R1, R1, #3
+    BL #65
+    B #1
+lbl write_OROS:
+    MOV R1, #0X1010
+    ADD R1, R1, #1
+    BL #60
+    ADD R1, R1, #3
+    BL #80
+    ADD R1, R1, #3
+    BL #60
+    ADD R1, R1, #3
+    BL #65
+    B #1
+lbl write_D:
+    MOV R2, #0B1111111010000010
+    STR R2, [R1]
+    MOV R2, #0B1000001001111100
+    STR R2, [R1, #1]
+    BX
+lbl write_N:
+    MOV R2, #0B1111111000100000
+    STR R2, [R1]
+    MOV R2, #0B0001000011111110
+    STR R2, [R1,#1]
+    BX
+lbl write_I:
+    MOV R2, #0B1000001011111110
+    STR R2, [R1]
+    MOV R2, #0B1000001000000000
+    STR R2, [R1, #1]
+    BX
+lbl write_O:
+    MOV R2, #0B0111110010000010
+    STR R2, [R1]
+    MOV R2, #0B1000001001111100
+    STR R2, [R1, #1]
+    BX
+lbl write_S:
+    MOV R2, #0B0110010010010010
+    STR R2, [R1]
+    MOV R2, #0B1001001001001100
+    STR R2, [R1, #1]
+    BX
+lbl write_A:
+    MOV R2, #0B0111111010001000
+    STR R2, [R1]
+    MOV R2, #0B1000100001111110
+    STR R2, [R1,#1]
+    BX
+lbl write_R:
+    MOV R2, #0B1111111010010000
+    STR R2, [R1]
+    MOV R2, #0B1001000001101110
+    STR R2, [R1,#1]
+    BX
+lbl write_R:
+    MOV R2, #0B1111111010010000
+    STR R2, [R1]
+    MOV R2, #0B1001000001101110
+    STR R2, [R1,#1]
+    BX
+lbl write_E:
+    MOV R2, #0B1111111010010010
+    STR R2, [R1]
+    MOV R2, #0B1001001010000010
+    STR R2, [R1,#1]
+    BX
+lbl write_V:
+    MOV R2, #0B1111100000000110
+    STR R2, [R1]
+    MOV R2, #0B0000011011111000
+    STR R2, [R1,#1]
+    BX
+lbl write_Y:
+    MOV R2, #0B1110010000010010
+    STR R2, [R1]
+    MOV R2, #0B0001001011111100
+    STR R2, [R1,#1]
+    BX
+lbl write_U:
+    MOV R2, #0B1111110000000010
+    STR R2, [R1]
+    MOV R2, #0B0000001011111100
+    STR R2, [R1,#1]
+    BX
+lbl write_C:
+    MOV R2, #0B0111110010000010
+    STR R2, [R1]
+    MOV R2, #0B1000001001000100
+    STR R2, [R1,#1]
+    BX
