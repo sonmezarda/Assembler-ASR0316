@@ -1,4 +1,4 @@
-MOV r13, #0x0010
+MOV sp, #0x0010
 
 main:
     mov r2, #0xFFAA
@@ -7,10 +7,10 @@ main:
     B end
 
 test:
-    push r14 
+    push lr 
     mov r1, #0xFFFF
     BL t2st
-    pop r14
+    pop lr
     BX
 
 t2st:

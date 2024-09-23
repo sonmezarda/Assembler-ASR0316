@@ -27,7 +27,6 @@ def main(argv):
     assembler.assemble_file(inputfile, outputfile, out_type)
 
     print ('Input file is "', inputfile)
-    print ('Output file is "', outputfile)
 
 if __name__ == "__main__":
    main(sys.argv[1:])

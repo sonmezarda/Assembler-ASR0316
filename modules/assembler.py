@@ -1,4 +1,6 @@
 import json
+from io import StringIO
+from intelhex import IntelHex
 
 LABEL_PREFIX = '@'
 CONSTANT_PREFIX = '$'
@@ -17,14 +19,47 @@ class AssembleHelper:
         with open(filename, 'w', encoding='utf-8') as file:
             file.write(HEADER+'\n')
             file.writelines(lines)
+    
+    @staticmethod
+    def break_lines(lines:list[str]) -> list[str]:
+        # Breaks the lines into 2 hex values and returns the list of hex values
+        hexlines = []
+        for line in lines:
+            line = line.strip()
+            p1 = line[2:4]
+            p2 = line[4:6]
+            p3 = line[6:8]
+            p4 = line[8:]
+            hexlines.append("0x"+p1.zfill(2))
+            hexlines.append("0x"+p2.zfill(2))   
+            hexlines.append("0x"+p3.zfill(2))
+            hexlines.append("0x"+p4.zfill(2)) 
+        return hexlines
+    
+    @staticmethod
+    def save_intelHexFile(filename:str, lines:list[str]):
+        # Digital circuit simulator is using IntelHex files as ROM input
+        print(lines)
+        ih = IntelHex()
+        for i, line in enumerate(lines):
+            ih[i] = int(line,16)
+        sio = StringIO()
+        ih.write_hex_file(sio)
+        hexstr = sio.getvalue()
+        with open(filename, 'w') as f:
+            f.write(hexstr)
+        sio.close()
 
     @staticmethod
     def load_instructions(filename:str):
         return json.loads(open(filename, 'r').read())
      
     @staticmethod
-    def bin_to_hex(binary:str) -> str:
-        return hex(int(binary, 2))[2:].zfill(8)
+    def bin_to_hex(binary:str, includePrefix:bool=False) -> str:
+        if includePrefix:
+            return '0x'+hex(int(binary, 2))[2:].zfill(8)
+        else:
+            return hex(int(binary, 2))[2:].zfill(8)
     
     @staticmethod
     def remove_whitespace(line:str) -> str:
@@ -42,6 +77,7 @@ class Assembler:
         self.labels = {}
         self.variables = {}
         self.default_values = self.instructions['DEFAULTS']
+        self.special_registers = json.loads(open('settings/special_registers.json', 'r').read())
         self.constants = self.set_default_constants()
 
     def get_default_param(self, inst_name:str, param_name) -> str:
@@ -55,7 +91,6 @@ class Assembler:
         # Gets default values from the instructions file and if the register is not given, it uses the default value
 
         IM = self.get_default_param(inst_name, 'IM') # Is Immediate
-        
         RW = self.get_default_param(inst_name, 'RW') 
         SF = self.get_default_param(inst_name, 'SF') # Sign Flag
         MR = self.get_default_param(inst_name, 'MR') # Memory Read
@@ -76,7 +111,7 @@ class Assembler:
 
     def clear_whitespace(self, lines:list[str]) -> list[str]:
         # Removes the whitespace from the lines and returns the list of lines
-        return [AssembleHelper.remove_whitespace(line) for line in lines if line.strip() != '']
+        return [AssembleHelper.remove_whitespace(line) for line in lines if line.strip() != '' and not line.strip().startswith(COMMENT_CHAR)]
     
     def get_constants(self, lines:list[str]) -> dict[str, str]:
         # Gets constants from the lines and adds them to the constants dictionary
@@ -155,8 +190,6 @@ class Assembler:
         return binary_line
 
     def convert_matched_params(self, params:dict[str, str]) -> str:
-
-
         for param in list(params.keys()):
             if '[ra]' in param or '[ra, #imm16]' in param:
                 params[param] = params[param].replace('[', '').replace(']', '').replace(',', ' ').split()
@@ -169,6 +202,10 @@ class Assembler:
                 elif len(params[param]) == 1:
                     params['ra'] = params[param][0]
                 del params[param]
+        
+        for key, value in params.items(): # Replaces the special registers with their values
+            if value.lower() in self.special_registers.keys():
+                params[key] = self.special_registers[value]
 
         for param in list(params.keys()):
             params[param] = self.convert_register(params[param])
@@ -203,12 +240,21 @@ class Assembler:
         lines = self.set_constants(lines)
         self.get_labels(lines)
         lines = self.set_labels(lines)
+        print(lines)
         if output_format == 'hex':
             out_lines = [AssembleHelper.bin_to_hex(self.convert_to_binary(line))+'\n' for line in lines]
         elif output_format == 'bin':
             out_lines = [self.convert_to_binary(line)+'\n' for line in lines]
+        elif output_format == 'ihex':
+            hexLines = [AssembleHelper.bin_to_hex(self.convert_to_binary(line), includePrefix=True) for line in lines]
+            print(hexLines)
+            out_lines = AssembleHelper.break_lines(hexLines)
         if output_file == None:
-            AssembleHelper.save_file(input_file.replace(f'.{input_format}', f'.{output_format}'), out_lines)
+            if output_format != 'ihex':
+                AssembleHelper.save_file(input_file.replace(f'.{input_format}', f'.{output_format}'), out_lines)
+            else:
+               # AssembleHelper.save_intelHexFile(output_file, out_lines)
+                AssembleHelper.save_intelHexFile(input_file.replace(f'.{input_format}', f'.hex'), out_lines)
         else:
             AssembleHelper.save_file(output_file, out_lines)
 
@@ -226,7 +272,8 @@ def main():
 if __name__ == '__main__':
 #main()
     assembler = Assembler()
-    assembler.assemble_file('examples/screen.asm', output_format='bin')
+    print(assembler.convert_to_binary('mov r1, lr'))
+    #assembler.assemble_file('examples/screen.asm', output_format='bin')
     
 
         

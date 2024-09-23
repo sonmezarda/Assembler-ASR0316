@@ -1,8 +1,8 @@
 from PIL import Image
 import numpy as np
 
-def rgb_to_hex565(red, green, blue):
-    return "0x%0.4X" % ((int(red / 255 * 31) << 11) | (int(green / 255 * 63) << 5) | (int(blue / 255 * 31)))
+def rgb_to_hex555(red, green, blue):
+    return "0x%0.4X" % ((int(red / 255 * 31) << 10) | (int(green / 255 * 31) << 5) | (int(blue / 255 * 31)))
 
 if __name__ == '__main__':
     path = 'images/wolf64.jpg'
