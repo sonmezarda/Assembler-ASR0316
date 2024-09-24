@@ -201,8 +201,9 @@ class Assembler:
                     params['rb'] = params[param][0]
                 elif len(params[param]) == 1:
                     params['ra'] = params[param][0]
+                    params['rb'] = "#0x0000"
                 del params[param]
-        
+                
         for key, value in params.items(): # Replaces the special registers with their values
             if value.lower() in self.special_registers.keys():
                 params[key] = self.special_registers[value]
@@ -217,7 +218,6 @@ class Assembler:
                 for i in splitted:
                     params[i] = params[param]
                 del params[param]
-
         return params
     
     def convert_register(self, reg:str) -> str:
@@ -240,7 +240,6 @@ class Assembler:
         lines = self.set_constants(lines)
         self.get_labels(lines)
         lines = self.set_labels(lines)
-        print(lines)
         if output_format == 'hex':
             out_lines = [AssembleHelper.bin_to_hex(self.convert_to_binary(line))+'\n' for line in lines]
         elif output_format == 'bin':

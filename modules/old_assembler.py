@@ -1,9 +1,8 @@
 import json
-import modules.macros as mcr
 
 # B komutundan sonra gelen label'a gidemiyor
 
-INSTRUCTION_FILE = "instructions.json"
+INSTRUCTION_FILE = "settings/instructions.json"
 HEADER = "v2.0 raw"
 CONSTANT_PREFIX = '$'
 COMMENT_CHAR = ';'
@@ -16,7 +15,6 @@ def getInstDic(ins_name)->dict:
     return ins[ins_name]    
 
 defaults = getInstDic("defaults")
-macros = getInstDic("macros")
 
 def decimal_to_binary(num:str) -> str:
     num = int(num)
@@ -50,16 +48,8 @@ def prepare_code(filename:str, outfile:str='.temp.asm'):
             elif line.upper().startswith('EQU'):
                 pass
             elif line != "":
-                line = line.upper()
-                if line.split()[0] in macros.keys():
-                    code = f'mcr.{macros[line.split()[0]]}("{line}")'
-                    e = eval(code)
-                    print(e)
-                    for lin in e:
-                        code_str+=lin.upper()
-                else:
-                    code_str+=line.upper()
-                    x += 1
+                code_str+=line.upper()
+                x += 1
     print(labels)
     
                     
@@ -174,7 +164,7 @@ def convert_code(filename:str=".temp.asm", output_name:str="last.hex"):
     file.close()
 
 def main():
-    filename = "examples/screen.asm"
+    filename = "examples/io_test.asm"
     prepare_code(filename)
     convert_code()
     pass
