@@ -6,14 +6,14 @@ def main(argv):
     outputfile:str = None
     out_type:str = 'hex'
     try:
-        opts, args = getopt.getopt(argv,"hi:o:t",["ifile=","ofile=","type="])
+        opts, args = getopt.getopt(argv,"hi:t:o",["ifile=","ofile=","type="])
         print(opts, args)
     except getopt.GetoptError:
         print ('main.py -i <inputfile> -o <outputfile>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print ('test.py -i <inputfile> -o <outputfile>')
+            print ('test.py -i <inputfile> -o <outputfile> --type <outputfile_type>')
             sys.exit()
         elif opt in ("-i", "--ifile"):
             inputfile = arg

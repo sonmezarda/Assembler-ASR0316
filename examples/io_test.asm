@@ -1,13 +1,11 @@
-equ ioAddr #0x1000
+equ ioAddr #0x2000
 
 mov r0, r0
 mov r0, $ioAddr
+mov r1, #0xF0FF
 
 readLoop:
-    ldr r1, [r0]
-    adds r1, r1, #0
-    BEQ readLoop
-    mov r2, r1
+    str r1, [r0]
     b readLoop
 end:
-b end
+    b end

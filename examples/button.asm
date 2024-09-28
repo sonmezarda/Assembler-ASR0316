@@ -1,6 +1,6 @@
 EQU button #0xFFFF
 EQU screen #0x0000
-EQU squareSize #16
+EQU squareSize #128
 
 MOV r0, r0
 MOV r2, $button

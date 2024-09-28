@@ -1,6 +1,7 @@
 import json
 from io import StringIO
 from intelhex import IntelHex
+from modules.macros import macro_words
 
 LABEL_PREFIX = '@'
 CONSTANT_PREFIX = '$'
@@ -67,6 +68,17 @@ class AssembleHelper:
         if COMMENT_CHAR in line:
             line = line.split(COMMENT_CHAR)[0]
         return line
+    
+    @staticmethod 
+    def is_macro_instruction(inst:str) -> bool:
+        return inst.casefold() in macro_words.keys()
+    
+    @staticmethod
+    def get_macro_lines(line:str) -> list[str]:
+        inst = line.split()[0].casefold()
+        if AssembleHelper.is_macro_instruction(inst):
+            return macro_words[inst](line)
+        return (line)
 
 class Assembler:
     def __init__(self):
@@ -159,6 +171,21 @@ class Assembler:
         lines = [line for line in lines if not line.strip()[-1] == ':']
         return [self.set_line_labels(line) for line in lines]
 
+    def set_macros(self, lines:list[str]) -> list[str]:
+        newLines:list[str] = []
+        for line in lines:
+            macro_line = AssembleHelper.get_macro_lines(line)
+            if type(macro_line) == str:
+                newLines.append(macro_line)
+                continue
+            for macro in macro_line:
+                newLines.append(macro)
+        return newLines
+                
+            
+        
+
+
     def get_instruction_splitted(self, line:str) -> list[str]:
         #splits the instruction line into instruction name and parameters
         splittedLine = []
@@ -238,6 +265,7 @@ class Assembler:
         lines = self.clear_whitespace(lines)
         self.get_constants(lines)
         lines = self.set_constants(lines)
+        lines = self.set_macros(lines)
         self.get_labels(lines)
         lines = self.set_labels(lines)
         if output_format == 'hex':
